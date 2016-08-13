@@ -2,8 +2,30 @@ def poker(hands):
 
     "Return the best hand: pokder([hand,...]) = > hand"
 
-    return max(hands, key = hand_rank)
+    return allmax(hands, key = hand_rank)
 # similar to max([1,-3,2],key = abs)
+
+def allmax(iterable, key = None):
+       "Return a list of all items equal to the max of the iterable."
+       result = []
+       maxval = None
+       
+       for hand in iterable:
+           xval = key(hand)
+       
+           if not result or  xval > maxval:
+               maxval = xval
+               result =[]
+               result.append(hand)
+           elif xval == maxval:
+               result.append(hand)
+               
+       return result
+               
+           
+      
+
+    
 
 def hand_rank(hand):
     
@@ -32,14 +54,13 @@ def hand_rank(hand):
 def card_ranks(cards):
     "Return a list of the ranks, sorted with higher first."
     
-    print cards
     
     ranks =['--23456789TJQKA'.index(r) for r, s in cards] # amazing !!!
     ranks.sort(reverse = True)
     
     if ranks ==[14,5,4,3,2]:
         ranks = [5,4,3,2,1]
-    
+            
     return ranks
      
 def straight(ranks):
@@ -118,11 +139,11 @@ def test():
     assert card_ranks(fk) == [9,9,9,9,7]
     assert card_ranks(fh) == [10,10,10,7,7]
     
-    assert poker([sf,fk,fh])== sf
-    assert poker([fk,fh])== fk
-    assert poker([fh,fh]) == fh
-    assert poker([sf]) == sf
-    assert poker([sf]+99*[fh]) == sf
+    assert poker([sf,fk,fh])== [sf]
+    assert poker([fk,fh])== [fk]
+    assert poker([fh,fh]) == [fh,fh]
+    assert poker([sf]) == [sf]
+    assert poker([sf]+99*[fh]) == [sf]
     
     # check return value
     assert hand_rank(sf) == (8,10)
