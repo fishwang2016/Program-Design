@@ -1,3 +1,22 @@
+# -----------
+# User Instructions
+# 
+# Write a function, deal(numhands, n=5, deck), that 
+# deals numhands hands with n cards each.
+#
+
+import random # this will be a useful library for shuffling
+
+# This builds a deck of 52 cards. If you are unfamiliar
+# with this notation, check out Andy's supplemental video
+# on list comprehensions (you can find the link in the 
+# Instructor Comments box below).
+
+mydeck = [r+s for r in '23456789TJQKA' for s in 'SHDC'] 
+
+def deal(numhands, n=5, deck=mydeck):
+    # Your code here.
+
 def poker(hands):
 
     "Return the best hand: pokder([hand,...]) = > hand"
@@ -8,13 +27,13 @@ def poker(hands):
 def allmax(iterable, key = None):
        "Return a list of all items equal to the max of the iterable."
        result = []
-       maxval = None
+       maxval = None # simpler written as reesult, maxval =[], None
        
        for hand in iterable:
            xval = key(hand)
        
            if not result or  xval > maxval:
-               maxval = xval
+               maxval = xval   # simple written as result , maxval = [x], xval
                result =[]
                result.append(hand)
            elif xval == maxval:
