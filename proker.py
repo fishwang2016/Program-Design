@@ -29,6 +29,19 @@ def hand_rank(hand):
     else: 
         return (0, ranks)
         
+def card_ranks(cards):
+    "Return a list of the ranks, sorted with higher first."
+    
+    print cards
+    
+    ranks =['--23456789TJQKA'.index(r) for r, s in cards] # amazing !!!
+    ranks.sort(reverse = True)
+    
+    if ranks ==[14,5,4,3,2]:
+        ranks = [5,4,3,2,1]
+    
+    return ranks
+     
 def straight(ranks):
      "Return True if th eordered ranks from a 5-card straight"
      
@@ -41,13 +54,7 @@ def flush(hand):
     return len(set(suits)) == 1 # Excellent use of set
     
     
-def card_ranks(cards):
-    "Return a list of the ranks, sorted with higher first."
-    
-    ranks =['--23456789TJQK'.index(r) for r, s in cards] # amazing !!!
-    ranks.sort(reverse = True)
-    
-    return ranks
+
     
 def kind(n, ranks):
     """Return the first rank that this hand has exactly n of.
@@ -91,6 +98,9 @@ def test():
     tp = "5D 5D 9H 9C 6S".split()
     fkranks = card_ranks(fk)
     tpranks = card_ranks(tp)
+    
+    al = "AC 2D 4H 3D 5S".split() # Ace-Low Straight
+    assert straight(card_ranks(al)) == True 
     
     assert kind(4,fkranks) == 9
     assert kind(3,fkranks) == None
