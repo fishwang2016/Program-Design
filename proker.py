@@ -29,10 +29,10 @@ def hand_rank(hand):
     else: 
         return (0, ranks)
         
- def straight(ranks):
+def straight(ranks):
      "Return True if th eordered ranks from a 5-card straight"
      
-     return (max(ranks)-min(ransk) == 4 ) and (len(set(ransk))== 5)
+     return (max(ranks)-min(ranks) == 4 ) and (len(set(ranks))== 5)
      
 def flush(hand):
     
@@ -49,6 +49,37 @@ def card_ranks(cards):
     
     return ranks
     
+def kind(n, ranks):
+    """Return the first rank that this hand has exactly n of.
+    Return None if there is no n-of-a-kind in the hand."""
+    # Your code here.
+    for r in ranks:
+        if ranks.count(r) == n: return r
+            
+    return None
+    
+def two_pair(ranks):
+    """If there are two pair, return the two ranks as a
+    tuple: (highest, lowest); otherwise return None."""
+    # Your code here.
+    a =[]
+    for r in ranks:
+        if ranks.count(r) == 2:
+            a.append(r)
+      
+    a = list(set(a))
+    if len(a) ==2:
+        
+        a = list(a)
+        a.sort(reverse = True)
+        
+        return tuple(a)
+        
+    else :
+        return None
+        
+
+    
 
 def test():
     
@@ -57,6 +88,16 @@ def test():
     sf = "6C 7C 8C 9C TC".split() #straight flush
     fk ="9D 9H 9S 9C 7D".split() #  four of a kind
     fh = "TD TC TH 7C 7D".split() # full house
+    tp = "5D 5D 9H 9C 6S".split()
+    fkranks = card_ranks(fk)
+    tpranks = card_ranks(tp)
+    
+    assert kind(4,fkranks) == 9
+    assert kind(3,fkranks) == None
+    assert kind(2, fkranks) == None
+    assert kind(1,fkranks) == 7
+    assert two_pair(fkranks) == None
+    assert two_pair(tpranks) ==(9,5)
     
     assert straight([9,8,7,6,5]) == True
     assert straight([9,8,8,6,5]) == False
@@ -77,6 +118,8 @@ def test():
     assert hand_rank(sf) == (8,10)
     assert hand_rank(fk) == (7,9,7)
     assert hand_rank(fh) ==(6,10,7)
+    
+    print "tests pass"
     
     return "tests pass"
 if __name__ =="__main__":
