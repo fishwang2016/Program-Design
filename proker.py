@@ -1,9 +1,93 @@
+# -----------
+# User Instructions
+# 
+# Write a function, deal(numhands, n=5, deck), that 
+# deals numhands hands with n cards each.
+#
+
+import random # this will be a useful library for shuffling
+
+# This builds a deck of 52 cards. If you are unfamiliar
+# with this notation, check out Andy's supplemental video
+# on list comprehensions (you can find the link in the 
+# Instructor Comments box below).
+import itertools
+import copy
+
+def best_hand(hand):
+    "From a 7-card hand, return the best 5 card hand."
+    temp = copy.copy(hand)
+    # Your code here
+    hands =[]
+    for i in range(7):
+        hand = copy.copy(temp)
+        hand.pop(i)
+        temp2 = copy.copy(hand)
+        
+        
+        for j in range(6-i):
+            hand = copy.copy(temp2)
+            print hand
+            hand.pop(j)
+            hands.append(hand)
+            print j
+    return poker(hands)
+        
+
+def shuffle(deck=[r+s for r in '23456789TJQKA' for s in 'SHDC']):
+    """a good shuffle function"""
+    print deck
+    N = len(deck)
+    for i in range(N):
+        swap(deck, i,random.randrange(i,N))
+        
+    return deck
+        
+
+def swap(deck,i,j):
+    """Swap elements i and j of a collection. """
+    
+    deck[i],deck[j] = deck[j],deck[i]
+    
+
+
+def deal(numhands, n=5, deck=[r+s for r in '23456789TJQKA' for s in 'SHDC'] ):
+    
+        # Your code here.
+    random.shuffle(deck)
+  
+    return [deck[n*i:n*(i+1)] for i in xrange(numhands)]
+            
+    # Your code here.
+
 def poker(hands):
 
     "Return the best hand: pokder([hand,...]) = > hand"
 
-    return max(hands, key = hand_rank)
+    return allmax(hands, key = hand_rank)
 # similar to max([1,-3,2],key = abs)
+
+def allmax(iterable, key = None):
+       "Return a list of all items equal to the max of the iterable."
+       result = []
+       maxval = None # simpler written as reesult, maxval =[], None
+       
+       for hand in iterable:
+           xval = key(hand)
+       
+           if not result or  xval > maxval:
+               maxval = xval   # simple written as result , maxval = [x], xval
+               result =[]
+               result.append(hand)
+           elif xval == maxval:
+               result.append(hand)
+               
+       return result
+               
+           
+      
+
+    
 
 def hand_rank(hand):
     
@@ -29,6 +113,18 @@ def hand_rank(hand):
     else: 
         return (0, ranks)
         
+def card_ranks(cards):
+    "Return a list of the ranks, sorted with higher first."
+    
+    
+    ranks =['--23456789TJQKA'.index(r) for r, s in cards] # amazing !!!
+    ranks.sort(reverse = True)
+    
+    if ranks ==[14,5,4,3,2]:
+        ranks = [5,4,3,2,1]
+            
+    return ranks
+     
 def straight(ranks):
      "Return True if th eordered ranks from a 5-card straight"
      
@@ -41,13 +137,7 @@ def flush(hand):
     return len(set(suits)) == 1 # Excellent use of set
     
     
-def card_ranks(cards):
-    "Return a list of the ranks, sorted with higher first."
-    
-    ranks =['--23456789TJQK'.index(r) for r, s in cards] # amazing !!!
-    ranks.sort(reverse = True)
-    
-    return ranks
+
     
 def kind(n, ranks):
     """Return the first rank that this hand has exactly n of.
@@ -92,6 +182,9 @@ def test():
     fkranks = card_ranks(fk)
     tpranks = card_ranks(tp)
     
+    al = "AC 2D 4H 3D 5S".split() # Ace-Low Straight
+    assert straight(card_ranks(al)) == True 
+    
     assert kind(4,fkranks) == 9
     assert kind(3,fkranks) == None
     assert kind(2, fkranks) == None
@@ -108,11 +201,11 @@ def test():
     assert card_ranks(fk) == [9,9,9,9,7]
     assert card_ranks(fh) == [10,10,10,7,7]
     
-    assert poker([sf,fk,fh])== sf
-    assert poker([fk,fh])== fk
-    assert poker([fh,fh]) == fh
-    assert poker([sf]) == sf
-    assert poker([sf]+99*[fh]) == sf
+    assert poker([sf,fk,fh])== [sf]
+    assert poker([fk,fh])== [fk]
+    assert poker([fh,fh]) == [fh,fh]
+    assert poker([sf]) == [sf]
+    assert poker([sf]+99*[fh]) == [sf]
     
     # check return value
     assert hand_rank(sf) == (8,10)
