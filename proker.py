@@ -20,17 +20,19 @@ def best_hand(hand):
     # Your code here
     hands =[]
     for i in range(7):
+   
         hand = copy.copy(temp)
         hand.pop(i)
+        print hand
         temp2 = copy.copy(hand)
         
         
-        for j in range(6-i):
-            hand = copy.copy(temp2)
-            print hand
-            hand.pop(j)
-            hands.append(hand)
-            print j
+        for j in range(i,6):
+            handj = copy.copy(temp2)
+        
+            handj.pop(j)
+            hands.append(handj)
+           
     return poker(hands)
         
 
